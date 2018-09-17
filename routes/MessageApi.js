@@ -20,10 +20,9 @@ module.exports = (router) => {
     .get(messageCtrl.like);
 
   /* 댓글 작성 */
-  // router.route('/comment/:idx')
-  //   .get(messageCtrl.selectComments)
-  //   .post(messageCtrl.saveComment);
-
+  router.route('/comment/:idx')
+    .get(messageCtrl.selectComments)
+    .post(messageCtrl.saveComment);
 
   return router;
 };

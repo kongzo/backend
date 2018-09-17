@@ -7,6 +7,12 @@
 module.exports = {
   db_schemas : [
     {
+      file: '../schemas/CommentSchema',
+      collection: 'comment',
+      schemaName: 'commentSchema',
+      modelName: 'commentModel'
+    },
+    {
       file: '../schemas/MessageSchema',
       collection: 'message',
       schemaName: 'messageSchema',

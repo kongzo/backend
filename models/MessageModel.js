@@ -108,3 +108,41 @@ exports.like = (messageIdx) => {
     })
   });
 };
+
+/*******************
+ *  selectComments
+ *  @param: messageIdx
+ ********************/
+exports.selectComments = (messageIdx) => {
+  return new Promise((resolve, reject) => {      
+    mongo.messageModel.selectComments(messageIdx, (err, result) => {
+      if (err) {
+        const customErr = new Error("Error occrred Push likes list: " + err);
+        reject(customErr);  
+      } else {
+        resolve(result);    
+      }
+    })
+  });
+};
+
+exports.saveComment = (data) => {
+  return new Promise((resolve, reject) => {
+    const dm = new mongo.commentModel(
+      {
+        nickname: data.nickname,
+        contents: data.contents,
+        created_at: helpers.getCurrentDate()
+      }
+    );
+    
+    mongo.messageModel.saveComment(data.idx, dm, (err, result) => {
+      if (err) {
+        const customErr = new Error("Error occrred while Save Direct Message: " + err);
+        reject(customErr);        
+      } else {
+        resolve(result);
+      }
+    });
+  });
+}

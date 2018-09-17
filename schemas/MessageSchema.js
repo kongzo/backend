@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const paginationCount = require('../utils/config').pagination_count;
+const commentSchema = global.utils.mongo.commentSchema.obj;
 
 let Schema = {};
 
@@ -14,12 +15,7 @@ Schema.createSchema = (mongoose) => {
     },
     contents: { type: String, required: true },
     likes: { type: Number, default: 0, index: true },
-    comments : [{  
-      idx: { type: Number, required: true },
-      nickname: { type: String, required: true },
-      contents: { type: String, required: true },
-      created_at : { type : Date, index: { unique : false }, default: Date.now }
-    }],
+    comments : [ commentSchema ],
     created_at : { type : Date, index: { unique : false }, default: Date.now }
   });
 
@@ -105,6 +101,22 @@ Schema.createSchema = (mongoose) => {
       callback
     );
   });
+
+  // selectComments : 하나 조회하기
+  messageSchema.static('selectComments', function (idx, callback) {
+    return this.find({ idx: parseInt(idx) }, { idx: true, comments: true, _id: false }, callback);
+  });
+
+  // saveComment : 댓글 저장하기
+  messageSchema.static('saveComment', function (messageIdx, data, callback) {
+    this.findOneAndUpdate(
+      { idx: parseInt(messageIdx) },
+      { $push: { comments: data } },
+      { "fields": { idx: true, comments: true, _id: false },
+        new: true },
+      callback
+    );
+  })
 
   return messageSchema;
 };
