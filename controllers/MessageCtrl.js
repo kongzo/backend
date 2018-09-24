@@ -1,6 +1,4 @@
 const fetch = require('node-fetch');
-const FormData = require('form-data');
-const AWS = require('aws-sdk');
 const validator = require('validator');
 const config = require('./../utils/config');
 const messageModel = require('../models/MessageModel');
