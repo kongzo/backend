@@ -1,3 +1,6 @@
+const fetch = require('node-fetch');
+const FormData = require('form-data');
+const AWS = require('aws-sdk');
 const validator = require('validator');
 const config = require('./../utils/config');
 const messageModel = require('../models/MessageModel');
@@ -20,6 +23,7 @@ exports.save = async (req, res, next) => {
   const lat = req.body.lat || req.params.lat;
   const contents = req.body.contents || req.params.contents;
   const layout = req.body.layout || req.params.layout || 0;
+  const image = req.body.image || req.params.image || null;
   
   /* 2. 유효성 체크하기 */
   let isValid = true;
@@ -47,11 +51,29 @@ exports.save = async (req, res, next) => {
   if (!isValid) return res.status(400).json(validationError);
   /* 유효성 체크 끝 */
 
-  let result = '';
+  let result = '', fileUrl = '';
 
-  const messageData = {
-    nickname, lng, lat, contents, layout
+  let messageData = {
+    nickname, lng, lat, contents, layout, image
   };    
+
+  if (image !== null) {
+    fileUrl = await fetch(process.env.IMAGE_URL, {
+      method: "POST",
+      headers: {'Content-Type': 'application/json' },
+      body: image
+    })
+    .then(res => res.json())
+    .then((response) => {
+      if (response && response[0]) {
+        return response[0].fileUrl;
+      } else {
+        return null;
+      }
+    });
+
+    messageData["image"] = fileUrl;
+  }
     
   try {
     result = await messageModel.save(messageData); 

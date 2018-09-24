@@ -17,6 +17,7 @@ Schema.createSchema = (mongoose) => {
     likes: { type: Number, default: 0, index: true },
     comments : [ commentSchema ],
     layout: { type: Number, default: 0 },
+    image: { type: String, default: null },
     created_at : { type : Date, index: { unique : false }, default: Date.now }
   });
 
