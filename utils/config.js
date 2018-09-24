@@ -25,6 +25,6 @@ module.exports = {
       modelName: 'seqModel'
     }
   ],
-  radius: 50,
+  radius: 1000,
   pagination_count: 20
 }
