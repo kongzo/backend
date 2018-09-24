@@ -4,7 +4,7 @@ const helpers = require('../utils/helpers');
 
 /*******************
  *  Save
- *  @param: messageData = { nickname, lat, lon, contents }
+ *  @param: messageData = { nickname, lat, lon, contents, layout }
  ********************/
 exports.save = (messageData) => {
   // 1. model 생성하기
@@ -17,6 +17,7 @@ exports.save = (messageData) => {
           coordinates: [messageData.lng, messageData.lat]
         },
         contents: messageData.contents,
+        layout: messageData.layout,
         created_at: helpers.getCurrentDate()
       }
     );

@@ -10,7 +10,7 @@ let validationError = {
 
 /*******************
  *  Save
- *  param: lng, lat, nickname, contents
+ *  param: lng, lat, nickname, contents, layout
  *  TODO 에러 코드 정리 및 PUSH
  ********************/
 exports.save = async (req, res, next) => {
@@ -19,6 +19,7 @@ exports.save = async (req, res, next) => {
   const lng = req.body.lng || req.params.lng;
   const lat = req.body.lat || req.params.lat;
   const contents = req.body.contents || req.params.contents;
+  const layout = req.body.layout || req.params.layout || 0;
   
   /* 2. 유효성 체크하기 */
   let isValid = true;
@@ -49,7 +50,7 @@ exports.save = async (req, res, next) => {
   let result = '';
 
   const messageData = {
-    nickname, lng, lat, contents
+    nickname, lng, lat, contents, layout
   };    
     
   try {
